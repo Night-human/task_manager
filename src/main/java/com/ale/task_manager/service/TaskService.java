@@ -61,12 +61,11 @@ public class TaskService {
     }
 
     public TaskResponse updateTask(Long id, TaskRequest taskRequest) {
-
         Task existingTask = taskRepository.findById(id).orElseThrow(
                 () -> new RuntimeException(String.format("No existe elemento con id = %d", id)));
         existingTask.updateFromTaskRequest(taskRequest);
 
-        return new TaskResponse(taskRepository.save(existingTask));
+        return TaskMapper.mapTaskToTaskResponse(taskRepository.save(existingTask));
     }
 
     public String deleteTask(Long id) {
@@ -91,7 +90,7 @@ public class TaskService {
         Task task = new Task();
         task.updateFromTaskRequest(taskRequest);
 
-        return new TaskResponse(taskRepository.save(task));
+        return TaskMapper.mapTaskToTaskResponse(taskRepository.save(task));
     }
 
 }
