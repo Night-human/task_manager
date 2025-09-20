@@ -5,7 +5,6 @@
 
 package com.ale.task_manager.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
