@@ -23,6 +23,7 @@ import com.ale.task_manager.model.enum_properties.TaskPriority;
 import com.ale.task_manager.model.enum_properties.TaskStatus;
 import com.ale.task_manager.service.TaskService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 
@@ -54,7 +55,7 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    public TaskResponse updateTask(@PathVariable Long id, @RequestBody TaskRequest taskRequest) {
+    public TaskResponse updateTask(@Valid @PathVariable Long id, @RequestBody TaskRequest taskRequest) {
         return taskService.updateTask(id, taskRequest);
     }
     
@@ -64,7 +65,7 @@ public class TaskController {
     }
 
     @PostMapping()
-    public ResponseEntity<TaskResponse> createTask(@RequestBody TaskRequest taskRequest) {
+    public ResponseEntity<TaskResponse> createTask(@Valid @RequestBody TaskRequest taskRequest) {
         return ResponseEntity.ok(taskService.createTask(taskRequest));
     }
     
