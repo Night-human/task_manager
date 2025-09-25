@@ -14,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.ale.task_manager.exceptionhandler.custom_exceptions.CustomExceptionsMessages;
+import com.ale.task_manager.exceptionhandler.custom_exceptions.TaskNotFoundException;
 import com.ale.task_manager.model.dto.TaskRequest;
 import com.ale.task_manager.model.dto.TaskResponse;
 import com.ale.task_manager.model.entity.Task;
@@ -61,7 +63,7 @@ public class TaskService {
 
     public TaskResponse updateTask(Long id, TaskRequest taskRequest) {
         Task existingTask = taskRepository.findById(id).orElseThrow(
-                () -> new RuntimeException(String.format("No existe elemento con id = %d", id)));
+                () -> new TaskNotFoundException(String.format(CustomExceptionsMessages.taskNotFoundException, id)));
         existingTask.updateFromTaskRequest(taskRequest);
 
         return TaskMapper.mapTaskToTaskResponse(taskRepository.save(existingTask));
@@ -73,14 +75,14 @@ public class TaskService {
 
             return String.format("Elemento con id %d fue eliminado", id);
         } else {
-            throw new RuntimeException(String.format("No existe elemento con id = %d", id));
+            throw new TaskNotFoundException(String.format(CustomExceptionsMessages.taskNotFoundException, id));
         }
 
     }
 
     public TaskResponse getTaskById(Long id) {
         Task task = taskRepository.findById(id).orElseThrow(
-                () -> new RuntimeException(String.format("Elemento con id = %d no encontrado", id)));
+                () -> new TaskNotFoundException(String.format(CustomExceptionsMessages.taskNotFoundException, id)));
 
         return TaskMapper.mapTaskToTaskResponse(task);
     }
