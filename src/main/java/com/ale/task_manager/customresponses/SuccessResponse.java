@@ -5,21 +5,12 @@
 
 package com.ale.task_manager.customresponses;
 
-import lombok.Getter;
-
 /**
  *
  * @author Night
  */
-@Getter
-public class SuccessResponse<T> {
-    private final boolean success;
-    private final String message;
-    private final T content;
 
-    public SuccessResponse(boolean success, String message, T content) {
-        this.success = success;
-        this.message = message;
-        this.content = content;
-    }
-}
+public record SuccessResponse<T> (
+      boolean success,
+      String message,
+      T content){}
