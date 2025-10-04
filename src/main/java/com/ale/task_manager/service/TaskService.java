@@ -58,7 +58,7 @@ public class TaskService {
 
         taskResponseList = taskList.getContent().stream().map(TaskMapper::mapTaskToTaskResponse).toList();
 
-        return new PageImpl<>(taskResponseList);
+        return new PageImpl<>(taskResponseList, taskList.getPageable(), taskList.getTotalElements());
     }
 
     public TaskResponse updateTask(Long id, TaskRequest taskRequest) {
