@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
-package com.ale.task_manager.ExceptionHandler;
+package com.ale.task_manager.exceptionhandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +13,8 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.ale.task_manager.exceptionhandler.custom_exceptions.TaskNotFoundException;
 
 /**
  *
@@ -33,5 +35,10 @@ public class CustomExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<?> deserializationExceptionHandler(HttpMessageNotReadableException e) {
         return ResponseEntity.badRequest().body(Map.of("error", "Error al crear tarea, verifique que la informacion enviada sea correcta."));
+    }
+
+    @ExceptionHandler(TaskNotFoundException.class)
+    public ResponseEntity<?> taskNotFoundExceptionHandler(TaskNotFoundException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 }

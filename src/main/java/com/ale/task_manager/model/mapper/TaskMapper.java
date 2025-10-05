@@ -5,10 +5,6 @@
 
 package com.ale.task_manager.model.mapper;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.ale.task_manager.model.dto.TaskRequest;
 import com.ale.task_manager.model.dto.TaskResponse;
 import com.ale.task_manager.model.entity.Task;
 

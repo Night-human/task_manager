@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ale.task_manager.customresponses.SuccessResponse;
 import com.ale.task_manager.model.dto.TaskRequest;
 import com.ale.task_manager.model.dto.TaskResponse;
 import com.ale.task_manager.model.enum_properties.TaskPriority;
@@ -41,32 +42,32 @@ public class TaskController {
     private final TaskService taskService;
 
     @GetMapping()
-    public ResponseEntity<Page<TaskResponse>> getAllTasks(
+    public ResponseEntity<SuccessResponse<Page<TaskResponse>>> getAllTasks(
         @RequestParam(required=false) TaskStatus status, 
         @RequestParam(required=false) TaskPriority priority,
         @RequestParam(defaultValue="0") int page,
         @RequestParam(defaultValue="10") int size) {
-        return ResponseEntity.ok(taskService.getAllTasks(status, priority, page, size));
+        return ResponseEntity.ok(new SuccessResponse<>(true, "", taskService.getAllTasks(status, priority, page, size)));
     }
 
     @GetMapping("/{id}")
-    public TaskResponse getTaskById(@PathVariable Long id) {
-        return taskService.getTaskById(id);
+    public ResponseEntity<SuccessResponse<TaskResponse>> getTaskById(@PathVariable Long id) {
+        return ResponseEntity.ok(new SuccessResponse<>(true, "", taskService.getTaskById(id)));
     }
 
     @PutMapping("/{id}")
-    public TaskResponse updateTask(@Valid @PathVariable Long id, @RequestBody TaskRequest taskRequest) {
-        return taskService.updateTask(id, taskRequest);
+    public ResponseEntity<SuccessResponse<TaskResponse>> updateTask(@Valid @PathVariable Long id, @RequestBody TaskRequest taskRequest) {
+        return ResponseEntity.ok(new SuccessResponse<>(true, "Tarea actualizada correctamente", taskService.updateTask(id, taskRequest)));
     }
     
     @DeleteMapping("/{id}")
-    public String deleteTask(@PathVariable Long id) {
-        return taskService.deleteTask(id);
+    public ResponseEntity<SuccessResponse<TaskResponse>> deleteTask(@PathVariable Long id) {
+        return ResponseEntity.ok(new SuccessResponse<>(true, taskService.deleteTask(id), null));
     }
 
     @PostMapping()
-    public ResponseEntity<TaskResponse> createTask(@Valid @RequestBody TaskRequest taskRequest) {
-        return ResponseEntity.ok(taskService.createTask(taskRequest));
+    public ResponseEntity<SuccessResponse<TaskResponse>> createTask(@Valid @RequestBody TaskRequest taskRequest) {
+        return ResponseEntity.ok(new SuccessResponse<>(true, "Tarea creada correctamente",taskService.createTask(taskRequest)));
     }
     
 }
