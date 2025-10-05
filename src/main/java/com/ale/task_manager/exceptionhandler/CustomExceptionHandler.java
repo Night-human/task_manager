@@ -14,6 +14,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.ale.task_manager.customresponses.ApiResponse;
+import com.ale.task_manager.exceptionhandler.custom_exceptions.CustomExceptionsMessages;
 import com.ale.task_manager.exceptionhandler.custom_exceptions.TaskNotFoundException;
 
 /**
@@ -29,16 +31,16 @@ public class CustomExceptionHandler {
         e.getBindingResult().getFieldErrors().forEach(error -> {
             errors.put(error.getField(), error.getDefaultMessage());
         });
-        return ResponseEntity.badRequest().body(errors);
+        return ResponseEntity.badRequest().body(new ApiResponse<>(false, CustomExceptionsMessages.methodArgumentNotValidException, errors));
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<?> deserializationExceptionHandler(HttpMessageNotReadableException e) {
-        return ResponseEntity.badRequest().body(Map.of("error", "Error al crear tarea, verifique que la informacion enviada sea correcta."));
+        return ResponseEntity.badRequest().body(new ApiResponse<>(false, CustomExceptionsMessages.messageNotReadableException, e.getMessage()));
     }
 
     @ExceptionHandler(TaskNotFoundException.class)
     public ResponseEntity<?> taskNotFoundExceptionHandler(TaskNotFoundException e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
+        return ResponseEntity.badRequest().body(new ApiResponse<>(false, e.getMessage(), null));
     }
 }
