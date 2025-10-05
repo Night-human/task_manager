@@ -69,11 +69,10 @@ public class TaskService {
         return TaskMapper.mapTaskToTaskResponse(taskRepository.save(existingTask));
     }
 
-    public String deleteTask(Long id) {
+    public void deleteTask(Long id) {
         if (taskRepository.existsById(id)) {
             taskRepository.deleteById(id);
-
-            return String.format("Elemento con id %d fue eliminado", id);
+            
         } else {
             throw new TaskNotFoundException(String.format(CustomExceptionsMessages.taskNotFoundException, id));
         }

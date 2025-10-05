@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ale.task_manager.customresponses.SuccessMessages;
 import com.ale.task_manager.customresponses.SuccessResponse;
 import com.ale.task_manager.model.dto.TaskRequest;
 import com.ale.task_manager.model.dto.TaskResponse;
@@ -47,27 +48,28 @@ public class TaskController {
         @RequestParam(required=false) TaskPriority priority,
         @RequestParam(defaultValue="0") int page,
         @RequestParam(defaultValue="10") int size) {
-        return ResponseEntity.ok(new SuccessResponse<>(true, "", taskService.getAllTasks(status, priority, page, size)));
+        return ResponseEntity.ok(new SuccessResponse<>(true, SuccessMessages.retrieved, taskService.getAllTasks(status, priority, page, size)));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<SuccessResponse<TaskResponse>> getTaskById(@PathVariable Long id) {
-        return ResponseEntity.ok(new SuccessResponse<>(true, "", taskService.getTaskById(id)));
+        return ResponseEntity.ok(new SuccessResponse<>(true, SuccessMessages.retrieved, taskService.getTaskById(id)));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<SuccessResponse<TaskResponse>> updateTask(@Valid @PathVariable Long id, @RequestBody TaskRequest taskRequest) {
-        return ResponseEntity.ok(new SuccessResponse<>(true, "Tarea actualizada correctamente", taskService.updateTask(id, taskRequest)));
+        return ResponseEntity.ok(new SuccessResponse<>(true, String.format(SuccessMessages.updated, id), taskService.updateTask(id, taskRequest)));
     }
     
     @DeleteMapping("/{id}")
     public ResponseEntity<SuccessResponse<TaskResponse>> deleteTask(@PathVariable Long id) {
-        return ResponseEntity.ok(new SuccessResponse<>(true, taskService.deleteTask(id), null));
+        taskService.deleteTask(id);
+        return ResponseEntity.ok(new SuccessResponse<>(true, String.format(SuccessMessages.deleted, id), null));
     }
 
     @PostMapping()
     public ResponseEntity<SuccessResponse<TaskResponse>> createTask(@Valid @RequestBody TaskRequest taskRequest) {
-        return ResponseEntity.ok(new SuccessResponse<>(true, "Tarea creada correctamente",taskService.createTask(taskRequest)));
+        return ResponseEntity.ok(new SuccessResponse<>(true, SuccessMessages.stored,taskService.createTask(taskRequest)));
     }
     
 }
