@@ -10,5 +10,7 @@ package com.ale.task_manager.exceptionhandler.custom_exceptions;
  * @author Night
  */
 public class CustomExceptionsMessages {
-    public static String taskNotFoundException = "La tarea con el id %d no ha sido encontrada";
+    public static String taskNotFoundException = "La tarea con el id %d no ha sido encontrada.";
+    public static String methodArgumentNotValidException = "Argumentos para la tarea no validos.";
+    public static String messageNotReadableException = "Error al crear tarea, verifique que la estructura de la informacion enviada sea correcta.";
 }
