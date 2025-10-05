@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ale.task_manager.customresponses.ApiResponse;
 import com.ale.task_manager.customresponses.SuccessMessages;
-import com.ale.task_manager.customresponses.SuccessResponse;
 import com.ale.task_manager.model.dto.TaskRequest;
 import com.ale.task_manager.model.dto.TaskResponse;
 import com.ale.task_manager.model.enum_properties.TaskPriority;
@@ -43,33 +43,33 @@ public class TaskController {
     private final TaskService taskService;
 
     @GetMapping()
-    public ResponseEntity<SuccessResponse<Page<TaskResponse>>> getAllTasks(
+    public ResponseEntity<ApiResponse<Page<TaskResponse>>> getAllTasks(
         @RequestParam(required=false) TaskStatus status, 
         @RequestParam(required=false) TaskPriority priority,
         @RequestParam(defaultValue="0") int page,
         @RequestParam(defaultValue="10") int size) {
-        return ResponseEntity.ok(new SuccessResponse<>(true, SuccessMessages.retrieved, taskService.getAllTasks(status, priority, page, size)));
+        return ResponseEntity.ok(new ApiResponse<>(true, SuccessMessages.retrieved, taskService.getAllTasks(status, priority, page, size)));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SuccessResponse<TaskResponse>> getTaskById(@PathVariable Long id) {
-        return ResponseEntity.ok(new SuccessResponse<>(true, SuccessMessages.retrieved, taskService.getTaskById(id)));
+    public ResponseEntity<ApiResponse<TaskResponse>> getTaskById(@PathVariable Long id) {
+        return ResponseEntity.ok(new ApiResponse<>(true, SuccessMessages.retrieved, taskService.getTaskById(id)));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SuccessResponse<TaskResponse>> updateTask(@Valid @PathVariable Long id, @RequestBody TaskRequest taskRequest) {
-        return ResponseEntity.ok(new SuccessResponse<>(true, String.format(SuccessMessages.updated, id), taskService.updateTask(id, taskRequest)));
+    public ResponseEntity<ApiResponse<TaskResponse>> updateTask(@Valid @PathVariable Long id, @RequestBody TaskRequest taskRequest) {
+        return ResponseEntity.ok(new ApiResponse<>(true, String.format(SuccessMessages.updated, id), taskService.updateTask(id, taskRequest)));
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<SuccessResponse<TaskResponse>> deleteTask(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<TaskResponse>> deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
-        return ResponseEntity.ok(new SuccessResponse<>(true, String.format(SuccessMessages.deleted, id), null));
+        return ResponseEntity.ok(new ApiResponse<>(true, String.format(SuccessMessages.deleted, id), null));
     }
 
     @PostMapping()
-    public ResponseEntity<SuccessResponse<TaskResponse>> createTask(@Valid @RequestBody TaskRequest taskRequest) {
-        return ResponseEntity.ok(new SuccessResponse<>(true, SuccessMessages.stored,taskService.createTask(taskRequest)));
+    public ResponseEntity<ApiResponse<TaskResponse>> createTask(@Valid @RequestBody TaskRequest taskRequest) {
+        return ResponseEntity.ok(new ApiResponse<>(true, SuccessMessages.stored,taskService.createTask(taskRequest)));
     }
     
 }

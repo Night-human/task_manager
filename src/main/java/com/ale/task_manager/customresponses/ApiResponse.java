@@ -10,7 +10,7 @@ package com.ale.task_manager.customresponses;
  * @author Night
  */
 
-public record SuccessResponse<T> (
+public record ApiResponse<T> (
       boolean success,
       String message,
       T content){}
